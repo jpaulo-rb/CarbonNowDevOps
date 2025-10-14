@@ -36,7 +36,7 @@ docker-compose up --build
 ```
 
 **4. Acesse a aplicação:**
-- Swagger: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
+- Swagger: [http://localhost:8081/swagger/index.html](http://localhost:8081/swagger/index.html)
 
 ---
 
@@ -213,3 +213,26 @@ networks:
 ```
 
 > **Observação:** o serviço `db` está definido no Compose, mas **não é utilizado pela API**, que continua conectando ao Oracle Database.
+
+---
+
+## Prints do funcionamento
+
+### 1. Swagger / Endpoints ativos
+![Swagger Local](./docs/swagger-local.png)
+
+### 2. Container rodando
+![Container Ativo](./docs/docker-container.png)
+
+### 3. Logs da aplicação
+![Logs API](./docs/api-logs.png)
+
+### 4. Execução de testes unitários
+![Testes Unitários](./docs/unit-tests.png)
+
+### 5. Deploy em Azure (produção ou staging)
+![Deploy Azure](./docs/azure-deploy.png)
+
+### 6. docker-compose rodando localmente
+![Docker Compose](./docs/docker-compose.png)
+
