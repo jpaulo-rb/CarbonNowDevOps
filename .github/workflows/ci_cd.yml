@@ -9,25 +9,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      TAG: ${{ steps.set-vars.outputs.TAG }}
+      APP_NAME: ${{ steps.set-vars.outputs.APP_NAME }}
+      SLOT_NAME: ${{ steps.set-vars.outputs.SLOT_NAME }}
+      AZURE_PROFILE: ${{ steps.set-vars.outputs.AZURE_PROFILE }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Set environment variables
+        id: set-vars
         run: |
-          # Obtém o nome da branch sem refs/heads/
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          
           if [ "$BRANCH_NAME" == "dev" ]; then
             echo "TAG=dev-${GITHUB_SHA}" >> $GITHUB_ENV
-            echo "AZURE_PROFILE=${{ secrets.AZURE_PROFILE_DEV }}" >> $GITHUB_ENV
             echo "APP_NAME=carbonnowapi-dev" >> $GITHUB_ENV
             echo "SLOT_NAME=staging" >> $GITHUB_ENV
+            echo "AZURE_PROFILE=${{ secrets.AZURE_PROFILE_DEV }}" >> $GITHUB_ENV
           else
             echo "TAG=${GITHUB_SHA}" >> $GITHUB_ENV
-            echo "AZURE_PROFILE=${{ secrets.AZURE_PROFILE }}" >> $GITHUB_ENV
             echo "APP_NAME=carbonnowapi" >> $GITHUB_ENV
             echo "SLOT_NAME=production" >> $GITHUB_ENV
+            echo "AZURE_PROFILE=${{ secrets.AZURE_PROFILE }}" >> $GITHUB_ENV
           fi
+          # Passando valores para outputs do job
+          echo "TAG=${TAG}" >> $GITHUB_OUTPUT
+          echo "APP_NAME=${APP_NAME}" >> $GITHUB_OUTPUT
+          echo "SLOT_NAME=${SLOT_NAME}" >> $GITHUB_OUTPUT
+          echo "AZURE_PROFILE=${AZURE_PROFILE}" >> $GITHUB_OUTPUT
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -64,14 +73,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: ${{ env.SLOT_NAME }}
     steps:
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.APP_NAME }}
-          slot-name: ${{ env.SLOT_NAME }}
-          publish-profile: ${{ env.AZURE_PROFILE }}
-          images: '${{ secrets.DOCKERHUB_USERNAME }}/carbonnow-api:${{ env.TAG }}'
+          app-name: ${{ needs.build.outputs.APP_NAME }}
+          slot-name: ${{ needs.build.outputs.SLOT_NAME }}
+          publish-profile: ${{ needs.build.outputs.AZURE_PROFILE }}
+          images: '${{ secrets.DOCKERHUB_USERNAME }}/carbonnow-api:${{ needs.build.outputs.TAG }}'
