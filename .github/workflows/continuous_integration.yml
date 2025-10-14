@@ -13,18 +13,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file ./CarbonNowAPI/Dockerfile --tag my-image-name:$(date +%s)
 
     - uses: actions/checkout@v4
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+        
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./CarbonNowAPI/CarbonNowAPI.csproj
+      
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ./CarbonNowAPI/CarbonNowAPI.csproj --no-restore
+      
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./CarbonNowAPI/CarbonNowAPI-Teste.csproj --no-build --verbosity normal
+
+    - name: Build the Docker image
+      run: docker build . --file ./CarbonNowAPI/Dockerfile --tag my-image-name:$(date +%s)
