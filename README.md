@@ -1,35 +1,39 @@
-# Projeto - CarbonNow
+# 🧩 API REST – Projeto CarbonNowAPI
 
-##  Como executar localmente com Docker
+## 📖 Visão Geral
+Esta API foi desenvolvida em **C# (.NET 8)** para fornecer endpoints REST de forma escalável e containerizada.  
+O projeto utiliza **Oracle Database** como persistência, e é totalmente automatizado via **GitHub Actions** para build, testes, publicação no **Docker Hub** e deploy contínuo na **Azure**.
 
-Pré-requisitos:
-Docker e Docker Compose instalados.
-Porta 8080 livre.
+---
 
-Passos:
+## 🚀 Como executar localmente com Docker
+
+### Pré-requisitos
+- Docker  
+- Docker Compose  
+
+### Passos
+
+**1. Clone o repositório:**
+```bash
 git clone https://github.com/jpaulo-rb/CarbonNowDevOps.git
 cd CarbonNowAPI
+```
+
+**2. Configure as variáveis de ambiente (appsettings.json):**
+```json
+{
+  "ConnectionString:Oracle": "User Id=SeuUsuario;Password=SuaSenha;Data Source=SeuDataSource",
+  "Jwt:Key": "SuaJwtKey",
+  "Jwt:Issuer": "SeuJwtIssuer",
+  "Jwt:Audience": "SeuJwtAudience"
+}
+```
+
+**3. Build e execução do container:**
+```bash
 docker-compose up --build
+```
 
-Acesso à aplicação:
-API: http://localhost:8080
-Swagger: http://localhost:8080/swagger/index.html
-
-Encerrar containers:
-docker-compose down
-
-##  Pipeline CI/CD
-
-
-
-##  Containerização
-
-Mostre o conteúdo do Dockerfile e as estratégias adotadas.
-
-##  Prints do funcionamento
-
-Inclua evidências (prints ou links) de execução, deploy e funcionamento em staging e produção.
-
-##  Tecnologias utilizadas
-
-Liste as stacks, frameworks e ferramentas usadas.
+**4. Acesse a aplicação:**
+- Swagger: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
