@@ -1,4 +1,4 @@
-# 🧩 API REST – Projeto CarbonNowAPI
+# API REST – Projeto CarbonNowAPI
 
 ## 📖 Visão Geral
 Esta API foi desenvolvida em **C# (.NET 8)** para fornecer endpoints REST de forma escalável e containerizada.  
@@ -6,7 +6,7 @@ O projeto utiliza **Oracle Database** como persistência, e é totalmente automa
 
 ---
 
-## 🚀 Como executar localmente com Docker
+## Como executar localmente com Docker
 
 ### Pré-requisitos
 - Docker  
