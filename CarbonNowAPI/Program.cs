@@ -132,7 +132,7 @@ using var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<DatabaseConnection>();
 db.Database.Migrate();
 
-if (true || app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
 
