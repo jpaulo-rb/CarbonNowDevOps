@@ -124,3 +124,92 @@ jobs:
           publish-profile: ${{ secrets.AZURE_PROFILE }}
           images: '${{ secrets.DOCKERHUB_USERNAME }}/carbonnow-api:${{ github.sha }}'
 ```
+
+---
+
+## Containerização
+
+A aplicação é totalmente **containerizada** utilizando Docker. O processo segue uma **multi-stage build** para otimizar o tamanho da imagem e separar fases de build, publish e runtime.
+
+### Dockerfile
+
+```dockerfile
+# Fase base (runtime)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+# Fase de build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["CarbonNowAPI/CarbonNowAPI.csproj", "CarbonNowAPI/"]
+RUN dotnet restore "./CarbonNowAPI/CarbonNowAPI.csproj"
+COPY . .
+WORKDIR "/src/CarbonNowAPI"
+RUN dotnet build "./CarbonNowAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Fase de publish
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./CarbonNowAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Fase final (produção)
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "CarbonNowAPI.dll"]
+```
+
+### Estratégias adotadas
+
+- **Multi-stage build**: separa build, publish e runtime, reduzindo tamanho final da imagem.  
+- **Imagem base runtime (`aspnet:8.0`)**: apenas para execução, menor footprint.  
+- **Build e publish separados**: garante que apenas os artefatos necessários vão para a fase final.  
+- **Exposição de portas 8080 e 8081**: padrão para desenvolvimento e depuração.  
+- **Compatível com Visual Studio**: suporta builds rápidos de depuração e execução normal.  
+- **Uso de ARG `BUILD_CONFIGURATION`**: permite alternar entre Release e Debug facilmente.
+
+### docker-compose.yml (para desenvolvimento)
+
+```yaml
+services:
+  carbonnowapi:
+    build:
+      context: .
+      dockerfile: CarbonNowAPI/Dockerfile
+    image: carbonnowapi
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - app-network
+
+  db:
+    container_name: mydb
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge
+```
+
+> **Observação:** o serviço `db` está definido no Compose, mas **não é utilizado pela API**, que continua conectando ao Oracle Database.
