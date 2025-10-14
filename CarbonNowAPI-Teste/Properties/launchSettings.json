@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CarbonNowAPI-Teste": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
