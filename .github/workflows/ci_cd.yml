@@ -60,7 +60,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'carbonnow-api'
+          app-name: 'carbonnowapi'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZURE_PROFILE }}
           images: '${{ secrets.DOCKERHUB_USERNAME }}/carbonnow-api:${{ github.sha }}'
