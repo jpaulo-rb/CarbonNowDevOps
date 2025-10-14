@@ -22,13 +22,13 @@ jobs:
         dotnet-version: 8.0.x
         
     - name: Restore dependencies
-      run: dotnet restore ./CarbonNowAPI.sln
+      run: dotnet restore
       
     - name: Build
-      run: dotnet build ./CarbonNowAPI.sln --no-restore
+      run: dotnet build --no-restore
       
     - name: Test
-      run: dotnet test ./CarbonNowAPI.sln --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
 
     - name: Build the Docker image
       run: docker build . --file ./CarbonNowAPI/Dockerfile --tag my-image-name:$(date +%s)
