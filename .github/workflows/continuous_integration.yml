@@ -28,7 +28,7 @@ jobs:
       run: dotnet build ./CarbonNowAPI/CarbonNowAPI.csproj --no-restore
       
     - name: Test
-      run: dotnet test ./CarbonNowAPI-Teste/CarbonNowAPI-Teste.csproj --no-build --verbosity normal
+      run: dotnet test ./CarbonNowAPI-Teste/CarbonNowAPI-Teste.csproj --no-build --verbosity diag
 
     - name: Build the Docker image
       run: docker build . --file ./CarbonNowAPI/Dockerfile --tag my-image-name:$(date +%s)
