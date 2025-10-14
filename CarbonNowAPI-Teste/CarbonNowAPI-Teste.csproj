@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CarbonNowApi\CarbonNowAPI.csproj" />
+    <ProjectReference Include="..\CarbonNowAPI\CarbonNowAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
