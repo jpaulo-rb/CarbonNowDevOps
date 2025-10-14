@@ -1,0 +1,7 @@
+services:
+  carbonnowapi:
+    image: ${DOCKER_REGISTRY-}carbonnowapi
+    build:
+      context: .
+      dockerfile: CarbonNowAPI/Dockerfile
+
