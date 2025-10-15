@@ -36,7 +36,7 @@ docker-compose up --build
 ```
 
 **4. Acesse a aplicação:**
-- Swagger: [http://localhost:8081/swagger/index.html](http://localhost:8081/swagger/index.html)
+- Swagger: [https://localhost:8081/swagger/index.html](https://localhost:8081/swagger/index.html)
 
 ---
 
@@ -221,18 +221,20 @@ networks:
 ### 1. Swagger / Endpoints ativos
 ![Swagger Local](./docs/swagger-local.png)
 
-### 2. Container rodando
+### 2. Container docker-compose rodando
 ![Container Ativo](./docs/docker-container.png)
 
-### 3. Logs da aplicação
-![Logs API](./docs/api-logs.png)
+### 3. CI/CD - Build
+![Build](./docs/build.png)
 
-### 4. Execução de testes unitários
-![Testes Unitários](./docs/unit-tests.png)
+### 4. CI/CD - Deploy
+![Deploy](./docs/deploy.png)
 
-### 5. Deploy em Azure (produção ou staging)
-![Deploy Azure](./docs/azure-deploy.png)
+### 6. Docker Hub
+![DockerHub](./docs/dockerhub.png)
 
-### 6. docker-compose rodando localmente
-![Docker Compose](./docs/docker-compose.png)
+### 6. App Service Azure
+![Azure](./docs/azure.png)
 
+### 7. Swagger na azure > habilitado para demonstração
+![AzureSwagger](./docs/azureSwagger.png)
