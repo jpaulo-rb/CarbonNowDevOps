@@ -239,3 +239,25 @@ networks:
 ### 7. Swagger na azure 
 > Habilitado somente para demonstração
 ![AzureSwagger](./docs/azureSwagger.png)
+
+---
+
+## Tecnologias e práticas utilizadas
+
+| Categoria                  | Tecnologia / Ferramenta / Padrão                    |
+|----------------------------|-----------------------------------------------------|
+| Linguagem                  | C# (.NET 8)                                         |
+| Framework Web              | ASP.NET Core Web API, MVC                           |
+| Banco de Dados             | Oracle Database                                     |
+| Migrations / ORM           | Entity Framework Core / Migrations                  |
+| Segurança / Autenticação   | JWT (Json Web Tokens)                               |
+| Containerização            | Docker, Docker Compose                              |
+| CI/CD                      | GitHub Actions                                      |
+| Registro de Imagens        | Docker Hub                                          |
+| Hospedagem                 | Azure App Service                                   |
+| Configuração Segura        | Secrets na Azure (Connection Strings e JWT Keys)    |
+| Documentação               | Swagger                                             |
+| Middleware                 | Custom Middleware para tratamento de exceptions     |
+| Design Patterns            | ViewModels, Clean Architecture                      |
+| Configuração               | appsettings.json                                    |
+
