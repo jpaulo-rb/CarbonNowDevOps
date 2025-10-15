@@ -236,5 +236,6 @@ networks:
 ### 6. App Service Azure
 ![Azure](./docs/azure.png)
 
-### 7. Swagger na azure > habilitado para demonstração
+### 7. Swagger na azure 
+> Habilitado somente para demonstração
 ![AzureSwagger](./docs/azureSwagger.png)
