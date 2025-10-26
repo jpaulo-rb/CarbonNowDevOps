@@ -12,6 +12,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      ConnectionStrings__Oracle: ${{ secrets.connectionStrings__Oracle }}
+      Jwt__Issuer: ${{ secrets.Jwt__Issuer }}
+      Jwt__Key: ${{ secrets.Jwt__Key }}
+      Jwt__Audience: ${{ secrets.Jwt__Audience }}
+      
     steps:
     - uses: actions/checkout@v4
     
