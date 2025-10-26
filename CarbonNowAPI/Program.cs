@@ -162,5 +162,3 @@ app.MapControllers();
 
 app.Run();
 public partial class Program { }
-
-// Teste CI_CD

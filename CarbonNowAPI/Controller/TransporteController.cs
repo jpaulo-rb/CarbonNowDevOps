@@ -8,19 +8,22 @@ using CarbonNowAPI.ViewModel.Transporte;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CarbonNowAPI.Controller {
+namespace CarbonNowAPI.Controller
+{
 
     [ApiVersion(1.0, Deprecated = true)]
     [ApiVersion(1.1)]
     [ApiController]
     [Route("api/v{v:apiVersion}/[controller]")]
     [Authorize]
-    public class TransporteController : ControllerBase {
+    public class TransporteController : ControllerBase
+    {
 
         private readonly ITransporteService _transporteService;
         private readonly IMapper _mapper;
 
-        public TransporteController(ITransporteService transporteService, IMapper mapper) {
+        public TransporteController(ITransporteService transporteService, IMapper mapper)
+        {
             _mapper = mapper;
             _transporteService = transporteService;
         }
@@ -28,13 +31,15 @@ namespace CarbonNowAPI.Controller {
         [MapToApiVersion(1.1)]
         [Authorize(Policy = "Normal")]
         [HttpGet]
-        public async Task<ActionResult<Paginacao<TransporteViewModel>>> ListarTodosTransportes([FromQuery] int pagina = 1, [FromQuery] int tamanho = 20) {
+        public async Task<ActionResult<Paginacao<TransporteViewModel>>> ListarTodosTransportes([FromQuery] int pagina = 1, [FromQuery] int tamanho = 20)
+        {
 
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
 
             var resultado = await _transporteService.ListarTransportes(pagina, tamanho, baseUrl);
 
-            var transportes = new Paginacao<TransporteViewModel> {
+            var transportes = new Paginacao<TransporteViewModel>
+            {
                 PaginaAtual = resultado.PaginaAtual,
                 TamanhoPagina = resultado.TamanhoPagina,
                 TotalItens = resultado.TotalItens,
@@ -49,13 +54,15 @@ namespace CarbonNowAPI.Controller {
         [MapToApiVersion(1.0)]
         [Authorize(Policy = "Normal")]
         [HttpGet]
-        public async Task<ActionResult<Paginacao<TransporteViewModel>>> ListarTodosTransportes() {
+        public async Task<ActionResult<Paginacao<TransporteViewModel>>> ListarTodosTransportes()
+        {
             return Ok(_mapper.Map<List<TransporteViewModel>>(await _transporteService.ListarTransportes()));
         }
 
         [Authorize(Policy = "Normal")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<TransporteViewModel>> BuscarTransportePorId(int id) {
+        public async Task<ActionResult<TransporteViewModel>> BuscarTransportePorId(int id)
+        {
 
             var transporte = await _transporteService.BuscarPorId(id);
             return Ok(_mapper.Map<TransporteViewModel>(transporte));
@@ -63,9 +70,11 @@ namespace CarbonNowAPI.Controller {
 
         [Authorize(Policy = "Normal")]
         [HttpGet("data/")]
-        public async Task<ActionResult<TransporteViewModel>> BuscarTransportePorData([FromQuery] DateOnly inicio, DateOnly fim) {
+        public async Task<ActionResult<TransporteViewModel>> BuscarTransportePorData([FromQuery] DateOnly inicio, DateOnly fim)
+        {
 
-            if (fim < inicio) {
+            if (fim < inicio)
+            {
                 return BadRequest("Data final menor que a data inicial.");
             }
 
@@ -75,13 +84,16 @@ namespace CarbonNowAPI.Controller {
 
         [Authorize(Policy = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> AtualizarTransporte(int id, TransporteViewModel transporte) {
+        public async Task<IActionResult> AtualizarTransporte(int id, TransporteViewModel transporte)
+        {
 
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
 
-            if (id != transporte.Id) {
+            if (id != transporte.Id)
+            {
                 return BadRequest("ID da transporte na URL difere do ID enviado.");
             }
 
@@ -94,15 +106,24 @@ namespace CarbonNowAPI.Controller {
 
         [Authorize(Policy = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<TransporteViewModel>> AdicionarTransporte(TransporteCadastroViewModel transporte) {
+        public async Task<ActionResult<TransporteViewModel>> AdicionarTransporte(TransporteCadastroViewModel transporte)
+        {
 
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
 
+            if (transporte.ValorDistanciaKm < 0)
+                return BadRequest("Distância inválida");
+
+            if (transporte.ValorPesoKg < 0)
+                return BadRequest("Peso inválido");
+
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int usuarioId)) {
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int usuarioId))
+            {
                 return Unauthorized("Usuário não autenticado.");
             }
 
@@ -116,7 +137,8 @@ namespace CarbonNowAPI.Controller {
 
         [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletarTransporte(int id) {
+        public async Task<IActionResult> DeletarTransporte(int id)
+        {
 
             await _transporteService.Deletar(id);
             return NoContent();
@@ -125,7 +147,8 @@ namespace CarbonNowAPI.Controller {
 
         [Authorize(Policy = "Normal")]
         [HttpGet("usuario/{id}")]
-        public async Task<IActionResult> BuscarEletricidadePorUsuario(int id) {
+        public async Task<IActionResult> BuscarEletricidadePorUsuario(int id)
+        {
             return Ok(_mapper.Map<List<TransporteViewModel>>(await _transporteService.BuscarPorUsuario(id)));
         }
     }

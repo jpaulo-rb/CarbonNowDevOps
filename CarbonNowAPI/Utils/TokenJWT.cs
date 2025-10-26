@@ -4,16 +4,20 @@ using System.Text;
 using CarbonNowAPI.Model;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CarbonNowAPI.Utils {
-    public class TokenJWT {
+namespace CarbonNowAPI.Utils
+{
+    public class TokenJWT
+    {
 
         private readonly IConfiguration _config;
 
-        public TokenJWT(IConfiguration config) {
+        public TokenJWT(IConfiguration config)
+        {
             _config = config;
         }
 
-        public string GerarToken(Usuario usuario) {
+        public string GerarToken(Usuario usuario)
+        {
 
             var claims = new[] {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),

@@ -114,6 +114,12 @@ namespace CarbonNowAPI.Controller
                 return BadRequest(ModelState);
             }
 
+            if (eletricidade.ValorEletricidade < 0)
+                return BadRequest("Valor de eletricidade inválido");
+
+            if (eletricidade.CarbonoKg < 0)
+                return BadRequest("Valor de carbono inválido");
+
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int usuarioId))

@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CarbonNowAPI.Model;
 
-namespace CarbonNowAPI.ViewModel.Transporte {
-    public class TransporteCadastroViewModel {
+namespace CarbonNowAPI.ViewModel.Transporte
+{
+    public class TransporteCadastroViewModel
+    {
 
 
-        [Required(ErrorMessage ="Peso da carga é obrigatório.")]
+        [Required(ErrorMessage = "Peso da carga é obrigatório.")]
         public decimal ValorPesoKg { get; set; }
 
         [Required(ErrorMessage = "Distância do transporte é obrigatório.")]
@@ -19,6 +21,5 @@ namespace CarbonNowAPI.ViewModel.Transporte {
 
         [Required(ErrorMessage = "O valor da emissão de Carbono é obrigatório.")]
         public decimal CarbonoKg { get; set; }
-
     }
 }

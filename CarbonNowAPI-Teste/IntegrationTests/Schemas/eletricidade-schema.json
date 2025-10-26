@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Eletricidade",
+    "type": "object",
+    "properties": {
+        "valorEletricidade": { "type": "number" },
+        "carbonoKg": { "type": "number" },
+        "dataEstimacao": {
+            "type": "string",
+            "format": "date"
+        },
+        "unidadeEletricidade": { "type": "string" }
+    },
+    "required": [ "valorEletricidade", "carbonoKg", "dataEstimacao", "unidadeEletricidade" ]
+}
