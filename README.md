@@ -58,21 +58,23 @@ A automação do projeto é realizada com **GitHub Actions**, permitindo integra
    Compila a API e valida dependências.
 
 3. **Testes**  
-   Executa testes unitários e verifica a cobertura de código.
+   Executa os testes unitários e de integração, garantindo a cobertura e o comportamento esperado da aplicação.
 
-   3.1 **Configuração**
-   O projeto utiliza variáveis sensíveis como JWT e ConnectionString.
-   Essas informações são configuradas por meio de secrets no GitHub Actions:
-    •	CONNECTIONSTRINGS__ORACLE
-    •	JWT__AUDIENCE
-    •	JWT__ISSUER
-    •	JWT__KEY
-   Em ambiente local, são lidas do arquivo appsettings.Development.json.
+   #### 3.1 Configuração  
+   O projeto depende de variáveis sensíveis, como **JWT** e **ConnectionString**, definidas como **GitHub Secrets** no pipeline do **GitHub Actions**:
 
-5. **Docker Build & Push**  
+   - `CONNECTIONSTRINGS__ORACLE`  
+   - `JWT__AUDIENCE`  
+   - `JWT__ISSUER`  
+   - `JWT__KEY`  
+
+   Em ambiente local, essas variáveis são carregadas automaticamente a partir do arquivo:  
+   `appsettings.Development.json`
+
+4. **Docker Build & Push**  
    Gera a imagem Docker da API e envia para o **Docker Hub**.
 
-6. **Deploy na Azure**  
+5. **Deploy na Azure**  
    Realiza o deploy automático da imagem mais recente no **Azure App Service**.
 
 ### Exemplo de workflow (GitHub Actions)
