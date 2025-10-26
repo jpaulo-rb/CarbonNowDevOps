@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ConnectionStrings__Oracle: ${{ secrets.CONNECTIONSTRING__ORACLE }}
+      ConnectionStrings__Oracle: ${{ secrets.CONNECTIONSTRINGS__ORACLE }}
       Jwt__Issuer: ${{ secrets.Jwt__Issuer }}
       Jwt__Key: ${{ secrets.Jwt__Key }}
       Jwt__Audience: ${{ secrets.Jwt__Audience }}
@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Debug environment
-      run: echo "ConnectionStrings__Oracle is '${{ env.ConnectionStrings__Oracle }}'"
+      run: echo "ConnectionStrings__Oracle is '${{ env.CONNECTIONSTRINGS_ORACLE }}'"
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
