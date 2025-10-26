@@ -52,7 +52,7 @@ A automação do projeto é realizada com **GitHub Actions**, permitindo integra
 ### Etapas do pipeline
 
 1. **Trigger**  
-   O pipeline é disparado em push ou pull request nas branches `main` ou `develop`.
+   O pipeline é disparado em push ou pull request nas branches `main` ou `dev`.
 
 2. **Build**  
    Compila a API e valida dependências.
@@ -60,10 +60,19 @@ A automação do projeto é realizada com **GitHub Actions**, permitindo integra
 3. **Testes**  
    Executa testes unitários e verifica a cobertura de código.
 
-4. **Docker Build & Push**  
+   3.1 **Configuração**
+   O projeto utiliza variáveis sensíveis como JWT e ConnectionString.
+   Essas informações são configuradas por meio de secrets no GitHub Actions:
+    •	CONNECTIONSTRINGS__ORACLE
+    •	JWT__AUDIENCE
+    •	JWT__ISSUER
+    •	JWT__KEY
+   Em ambiente local, são lidas do arquivo appsettings.Development.json.
+
+5. **Docker Build & Push**  
    Gera a imagem Docker da API e envia para o **Docker Hub**.
 
-5. **Deploy na Azure**  
+6. **Deploy na Azure**  
    Realiza o deploy automático da imagem mais recente no **Azure App Service**.
 
 ### Exemplo de workflow (GitHub Actions)
@@ -71,6 +80,13 @@ A automação do projeto é realizada com **GitHub Actions**, permitindo integra
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      ConnectionStrings__Oracle: ${{ secrets.CONNECTIONSTRINGS__ORACLE }}
+      Jwt__Issuer: ${{ secrets.Jwt__Issuer }}
+      Jwt__Key: ${{ secrets.Jwt__Key }}
+      Jwt__Audience: ${{ secrets.Jwt__Audience }}
+    
     steps:
     - uses: actions/checkout@v4
     
@@ -86,7 +102,7 @@ jobs:
       run: dotnet build ./CarbonNowAPI/CarbonNowAPI.csproj --no-restore
       
     - name: Test
-      run: dotnet test ./CarbonNowAPI-Teste/CarbonNowAPI-Teste.csproj --verbosity normal
+      run: dotnet test ./CarbonNowAPI-Teste/CarbonNowAPI-Teste.csproj --verbosity minimal
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -124,8 +140,6 @@ jobs:
           publish-profile: ${{ secrets.AZURE_PROFILE }}
           images: '${{ secrets.DOCKERHUB_USERNAME }}/carbonnow-api:${{ github.sha }}'
 ```
-
----
 
 ## Containerização
 
