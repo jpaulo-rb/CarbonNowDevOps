@@ -21,6 +21,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+
+    - name: Debug environment
+      run: echo "ConnectionStrings__Oracle is '${{ env.ConnectionStrings__Oracle }}'"
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
