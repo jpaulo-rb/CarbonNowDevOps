@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Debug environment
-      run: echo "ConnectionStrings__Oracle is '${{ env.CONNECTIONSTRINGS_ORACLE }}'"
+      run: echo "ConnectionStrings__Oracle is '${{ env.CONNECTIONSTRINGS__ORACLE }}'"
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
